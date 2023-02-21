@@ -1,23 +1,21 @@
-/*                                               
- *        B a t t l e S h i p s
- *                                   
- *           _=| /)    _=| /)          
- *             |/ )      |/ )          
- *             /  )      /  )          
- *    \____\  /   )     /   )          
- *    /    /\/   /     /   /           
- *   /    / /)  /______)  /______.     
- * \/___\/ / ) /|======) /|====== ~`-,;
- *  \  _ \/_/)/||_     )/||_      _,~' 
- *   \ \\ _ \===================-~ .'  
- *    \   \\   \o\  \o\  \o\      /    
- * ~`-.\.-'~`-._.-'~`-._.-'~`-._.''~`-._.-'~`-._.-'~`-._.-
- */                                   
-
+/*   B a t t l e   S h e e p
+ *
+ *   The farm management game. Put your opponent out of business
+ *   by blowing their sheep up before they can get to market.
+ *                                                  
+ *                       {^--^}.-._._.---.__.-;          
+ *    ||            ||   {6 6 }.')' (  )  ).-`  ||           
+ *   _||____________||___( v  )._('.) ( .' )____||_          
+ *   -||------------||----`..''(.'  (   ) .)----||-          
+ *   _||____________||______#`(.'( . ( (',)_____||_          
+ *   -||------------||-------'\_.).(_.). )------||-          
+ *    ||            ||        `W W     W W      ||jgs        
+ * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ */
 #include "plugin_headers.h"                       
 
-PLUGIN_NAME( "Battleships Game" )
-PLUGIN_VERSION( "1.8"  )
+PLUGIN_NAME( "Battle Sheep" )
+PLUGIN_VERSION( "1.9"  )
 PLUGIN_DEPENDENCIES( "" )
 PLUGIN_AUTHORS_LIST( "galak" )
 
@@ -46,18 +44,22 @@ typedef struct game_s
 #define ACCEPTED      ( 1 << 0 )
 #define READY         ( 1 << 1 )
 
-static char ship_colour[ 6 ] = "YYYPPG";
+static char sheep_colour[ 6 ] = "WWWwwn";
+
+#define MISS_COLOUR 'd'
+#define HIT_COLOUR 'R'
+#define BOARD_COLOUR 'g'
 
 /* grid bits */
 
-#define EMPTY         ( 1 << 0 )
-#define SHIP2_1       ( 1 << 1 )
-#define SHIP2_2       ( 1 << 2 )
-#define SHIP2_3       ( 1 << 3 )
-#define SHIP3_1       ( 1 << 4 )
-#define SHIP3_2       ( 1 << 5 )
-#define SHIP4_1       ( 1 << 6 )
-#define BOMBED        ( 1 << 7 )
+#define EMPTY          ( 1 << 0 )
+#define SHEEP2_1       ( 1 << 1 )
+#define SHEEP2_2       ( 1 << 2 )
+#define SHEEP2_3       ( 1 << 3 )
+#define SHEEP3_1       ( 1 << 4 )
+#define SHEEP3_2       ( 1 << 5 )
+#define SHEEP4_1       ( 1 << 6 )
+#define BOMBED         ( 1 << 7 )
            
 game_t *games;
 
@@ -199,9 +201,9 @@ player_t *get_player( user_t *u, game_t *game )
      
 void randomise_board( player_t *p )
 {
-     int a, b, ship, done, dir, x, y, length;
+     int a, b, sheep, done, dir, x, y, length;
 
-     ship = SHIP4_1;
+     sheep = SHEEP4_1;
                               
      /* reset the board */
      for( a = 0; a < 8; a++ )
@@ -213,14 +215,14 @@ void randomise_board( player_t *p )
      {
           done = 0;
 
-          switch( ship )
+          switch( sheep )
           {
-          case SHIP4_1 : length = 4; break;
-          case SHIP3_1 : 
-          case SHIP3_2 : length = 3; break;
-          case SHIP2_1 :
-          case SHIP2_2 :
-          case SHIP2_3 : length = 2; break;
+          case SHEEP4_1 : length = 4; break;
+          case SHEEP3_1 : 
+          case SHEEP3_2 : length = 3; break;
+          case SHEEP2_1 :
+          case SHEEP2_2 :
+          case SHEEP2_3 : length = 2; break;
           }
 
           while( !done )
@@ -250,15 +252,15 @@ void randomise_board( player_t *p )
           if ( !dir )
           {
                for ( b = 0; b < length; b++)
-                  p -> grid[ x + b ][ y ] = ship;
+                  p -> grid[ x + b ][ y ] = sheep;
           }
           else 
           {
                for ( b = 0; b < length; b++)
-                  p -> grid[ x ][ y + b ] = ship;
+                  p -> grid[ x ][ y + b ] = sheep;
           }         
 
-          ship >>= 1;
+          sheep >>= 1;
      }
 
 }
@@ -282,12 +284,12 @@ void render_line( string_t **buf_ptr, int *line, int visible )
                if( *( line + i ) & BOMBED )
                {
                     c = 'X';
-                    col = 'R';
+                    col = HIT_COLOUR;
                }
                else
                {  
                     c   = ( visible ) ? '0' : '?';
-                    col = ( visible ) ? ship_colour[ index ] : 'b';
+                    col = ( visible ) ? sheep_colour[ index ] : BOARD_COLOUR;
                }
           }                    
           else
@@ -295,12 +297,12 @@ void render_line( string_t **buf_ptr, int *line, int visible )
                if( *( line + i ) & BOMBED )
                {
                     c = '=';
-                    col = 'W';
+                    col = MISS_COLOUR;
                }
                else
                {
                     c = ( visible ) ? '-' : '?';
-                    col = 'b';
+                    col = BOARD_COLOUR;
                }
           }
 
@@ -319,7 +321,15 @@ void render_preboard( player_t *p )
      {
           string_append( buf, " ^c%d", i + 1 );
           render_line( &buf, &( p -> grid[ i ][ 0 ] ), 1 );
-          string_append( buf, "^n\n" );
+
+          switch( i )
+          {
+          case 0  : string_append( buf, "      ^YB a t t l e   S h e e p^n\n" ); break;
+          case 2  : string_append( buf, "      ^cSelect herd grazing positions^n\n" ); break;
+          case 4  : string_append( buf, "      ^cUse 'bsh rand' to randomize the herd^n\n" ); break;
+          case 5  : string_append( buf, "      ^cand 'bsh ready' once you have made your selection^n\n" ); break;
+          default : string_append( buf, "^n\n" );
+          }
      }
 
      user_output( CGAMES, NULL, p -> u, buf -> data );
@@ -379,8 +389,8 @@ void render_viewboard( user_t *u, player_t *p1, player_t *p2 )
      char s1[ 35 ], s2[ 35 ];
      int i;
                
-     sprintf( s1, "%s's ships", p1 -> u -> current_name );
-     sprintf( s2, "%s's ships", p2 -> u -> current_name );
+     sprintf( s1, "%s's sheep", p1 -> u -> current_name );
+     sprintf( s2, "%s's sheep", p2 -> u -> current_name );
      buf = string_alloc( "   %-30.30s       %-30.30s\n", s1, s2 );
      string_append( buf, "   ^cA B C D E F G H                      A B C D E F G H\n" );
 
@@ -422,14 +432,14 @@ int evaluate_move( char *str, int *x, int *y )
 }
 
 /* returns how many parts remaining if true, 0 if false */
-int ship_afloat( player_t *p, int ship )
+int sheep_alive( player_t *p, int sheep )
 {
      int a, b;
      int r = 0;
      
      for( a = 0; a < 8; a++ )
           for( b = 0; b < 8; b++ )
-               if( ( p -> grid[ a ][ b ] & ship ) && !( p -> grid[ a ][ b ] & BOMBED ) )
+               if( ( p -> grid[ a ][ b ] & sheep ) && !( p -> grid[ a ][ b ] & BOMBED ) )
                     r++;
 
      return r;
@@ -461,24 +471,33 @@ void bsh( user_t *u, int argc, char *argv[] )
           game = find_game_by_user( opponent );
           if( game )
           {
-               command_output( "Sorry, that user is already playing a game of battleships\n" );
+               command_output( "Sorry, that user is already playing a game of battlesheep\n" );
                return;
           }
 
           game = add_game( u, opponent );
           if( !game )
           {
-               command_output( "Sorry, an error occured, you may not play battleships at this time\n" );
+               command_output( "Sorry, an error occured, you may not play battlesheep at this time\n" );
                return;
           }           
 
-          user_output( CGAMES, u, opponent, "^W%s has challenged you to a game of battleships\n^WType 'bsh accept' or 'bsh decline'^n\n", u -> current_name );
-          command_output( "You challenge %s to a game of battleships...\n", opponent -> current_name );
+          user_output( CGAMES, u, opponent, "^W%s has challenged you to a game of battlesheep\n^WType 'bsh accept' or 'bsh decline'^n\n", u -> current_name );
+          command_output( "You challenge %s to a game of battlesheep...\n", opponent -> current_name );
      }
      else
      {
           p   = get_player( u, game );
           opp = ( p == game -> p1 ) ? game -> p2 : game -> p1;
+
+          if( !( game -> p2 -> flags & ACCEPTED ) )
+          {
+               if( p == game -> p2 )
+                    command_output( "Waiting for you to accept the challenge\n" );
+               else
+            command_output( "Waiting for your opponent to accept the challenge\n" );
+               return;   
+          }
 
           if( !( p -> flags & READY ) )
           {
@@ -502,7 +521,7 @@ void bsh( user_t *u, int argc, char *argv[] )
           if( p != game -> turn )
           {                                       
                render_board( p, opp );
-               command_output( "It is %s's turn\n", opp -> u -> current_name );
+               command_output( "It is Farmer %s\'s turn\n", opp -> u -> current_name );
                return;
           }
 
@@ -532,16 +551,16 @@ void bsh( user_t *u, int argc, char *argv[] )
                     render_board( p, opp );
                     render_board( opp, p );
 
-                    status = ship_afloat( opp, opp -> grid[ y ][ x ] & ~BOMBED );
+                    status = sheep_alive( opp, opp -> grid[ y ][ x ] & ~BOMBED );
 
                     if( status == 0 )
                     {
-                         user_output( CGAMES, u, opp -> u, "%s tries %c%d, ^RHIT!^N They sunk a ship and get another turn\n", u -> current_name, ( char ) x + 'A', y + 1 );
-                         command_output( "You try %c%d, ^RHIT!^N The ship is sunk! You get another turn\n", ( char ) x + 'A', y + 1 );
+                         user_output( CGAMES, u, opp -> u, "Farmer %s tries %c%d, ^RHIT!^N They killed a sheep and get another turn\n", u -> current_name, ( char ) x + 'A', y + 1 );
+                         command_output( "You try %c%d, ^RHIT!^N The sheep is dead! You get another turn\n", ( char ) x + 'A', y + 1 );
                     }
                     else
                     {
-                         user_output( CGAMES, u, opp -> u, "%s tries %c%d, ^RHIT!^N They get another turn\n", u -> current_name, ( char ) x + 'A', y + 1 );
+                         user_output( CGAMES, u, opp -> u, "Farmer %s tries %c%d, ^RHIT!^N They get another turn\n", u -> current_name, ( char ) x + 'A', y + 1 );
                          command_output( "You try %c%d, ^RHIT!^N You get another turn\n", ( char ) x + 'A', y + 1 );
                     }
                     return;
@@ -550,7 +569,7 @@ void bsh( user_t *u, int argc, char *argv[] )
                {
                     render_board( p, opp );
                     render_postboard( opp, p );
-                    group_output( CGAMES, universe -> connected, "^g->^n Shiver my timbers! %s just beat %s at Battleships!\n", u -> current_name, opp -> u -> current_name );
+                    group_output( CGAMES, universe -> connected, "^g->^n Baaaa! Farmer %s just put Farmer %s out of business!\n", u -> current_name, opp -> u -> current_name );
                     remove_game( game );
                }
           }
@@ -560,8 +579,8 @@ void bsh( user_t *u, int argc, char *argv[] )
                render_board( opp, p );
 
                game -> turn = opp;
-               user_output( CGAMES, u, opp -> u, "%s tries %c%d. ^WMISS!^N It is now your turn\n", u -> current_name, ( char ) x + 'A', y + 1 );
-               command_output( "^WMISS!^N It is now %s's turn\n", opp -> u -> current_name );
+               user_output( CGAMES, u, opp -> u, "Farmer %s tries %c%d. ^WMISS!^N It is now your turn\n", u -> current_name, ( char ) x + 'A', y + 1 );
+               command_output( "^WMISS!^N It is now Farmer %s's turn\n", opp -> u -> current_name );
           }
      }
 }
@@ -576,26 +595,26 @@ void bsh_who( user_t *u, int argc, char *argv[] )
 
      if( mover == NULL )
      {           
-          command_output( "There are no Battleships games in progress\n" );
+          command_output( "There are no Battlesheep games in progress\n" );
           return;
      }
 
      buf = string_alloc( "" );
 
-     string_append_title( u, buf, LEFT, "Battleships Games in Progress" );
+     string_append_title( u, buf, LEFT, "Battlesheep Games in Progress" );
            
      i = 1;
 
      while( mover )
      {                          
           if( mover -> p1 -> u == NULL )
-               string_append( buf, "%2d) %s's opponent is not connected\n", i, mover -> p2 -> u -> current_name );
+               string_append( buf, "%2d) Farmer %s's opponent is not connected\n", i, mover -> p2 -> u -> current_name );
           else if( mover -> p2 -> u == NULL )
-               string_append( buf, "%2d) %s's opponent is not connected\n", i, mover -> p1 -> u -> current_name );
+               string_append( buf, "%2d) Farmer %s's opponent is not connected\n", i, mover -> p1 -> u -> current_name );
           else if( !( mover -> p2 -> flags & ACCEPTED ) )
                string_append( buf, "%2d) %s has challenged %s\n", i, mover -> p1 -> u -> current_name, mover -> p2 -> u -> current_name );
           else
-               string_append( buf, "%2d) %s is playing %s\n", i, mover -> p1 -> u -> current_name, mover -> p2 -> u -> current_name );
+               string_append( buf, "%2d) Farmer %s is playing Farmer %s\n", i, mover -> p1 -> u -> current_name, mover -> p2 -> u -> current_name );
 
           mover = mover -> next;
           i++;
@@ -614,7 +633,7 @@ void bsh_view( user_t *u, int argc, char *argv[] )
 
      if( argc < 2 )
      {
-          command_output( "Format: bsh %s <game number>\n" );
+          command_output( "Format: bsh %s <game number>\n", argv[ 0 ] );
           return;
      }
 
@@ -663,7 +682,7 @@ void bsh_accept( user_t *u, int argc, char *argv[ ] )
 
      if( !game )
      {
-          command_output( "No one has challenged you to a game of battleships!\n" );
+          command_output( "No one has challenged you to a game of battlesheep!\n" );
           return;
      }           
                  
@@ -696,7 +715,7 @@ void bsh_decline( user_t *u, int argc, char *argv[ ] )
 
      if( !game )
      {
-          command_output( "No one has challenged you to a game of battleships!\n" );
+          command_output( "No one has challenged you to a game of battlesheep!\n" );
           return;
      }           
 
@@ -712,8 +731,8 @@ void bsh_decline( user_t *u, int argc, char *argv[ ] )
           return;
      }           
 
-     user_output( CGAMES, u, game -> p1 -> u, "%s declines your battleships offer\n", u -> current_name );
-     command_output( "You decline the battleships offer from %s\n", game -> p1 -> u -> current_name );
+     user_output( CGAMES, u, game -> p1 -> u, "%s declines your battlesheep offer\n", u -> current_name );
+     command_output( "You decline the battlesheep offer from %s\n", game -> p1 -> u -> current_name );
 
      remove_game( game );
 }
@@ -727,7 +746,7 @@ void bsh_random( user_t *u, int argc, char *argv[ ] )
 
      if( !game )
      {
-          command_output( "You are not playing battleships!\n" );
+          command_output( "You are not playing battlesheep!\n" );
           return;
      }           
 
@@ -753,7 +772,7 @@ void bsh_ready( user_t *u, int argc, char *argv[ ] )
 
      if( !game )
      {
-          command_output( "You are not playing battleships!\n" );
+          command_output( "You are not playing battlesheep!\n" );
           return;
      }           
 
@@ -793,7 +812,7 @@ void bsh_ready( user_t *u, int argc, char *argv[ ] )
      render_board( game -> p2, game -> p1 );
 
      user_output( CGAMES, NULL, game -> turn -> u, "You get to go first\n" );
-     user_output( CGAMES, NULL, opp -> u, "%s gets to go first\n", game -> turn -> u -> current_name );
+     user_output( CGAMES, NULL, opp -> u, "Farmer %s gets to go first\n", game -> turn -> u -> current_name );
 }
 
 void bsh_quit( user_t *u, int argc, char *argv[ ] )
@@ -806,7 +825,7 @@ void bsh_quit( user_t *u, int argc, char *argv[ ] )
 
      if( !game )
      {
-          command_output( "You are not playing battleships!\n" );
+          command_output( "You are not playing battlesheep!\n" );
           return;
      }           
 
@@ -814,15 +833,17 @@ void bsh_quit( user_t *u, int argc, char *argv[ ] )
      opp = ( p == game -> p1 ) ? game -> p2 : game -> p1;
 
      if( opp -> u )
-          user_output( CGAMES, u, opp -> u, "%s has just quit your game of battleships!\n", u -> current_name );
+          user_output( CGAMES, u, opp -> u, "%s has just quit your game of battlesheep!\n", u -> current_name );
 
-     command_output( "You quit your game of battleships\n" );
+     command_output( "You quit your game of battlesheep\n" );
 
      remove_game( game );
 }
 
 void plugin_init( plugin_s *p_handle )
-{          
+{
+     games = NULL;
+          
      add_command(    "bsh",            bsh,         p_handle, CMD_GAMES,    1 );
      add_subcommand( "bsh", "accept",  bsh_accept,  p_handle, CMD_GAMES,    0 );
      add_subcommand( "bsh", "decline", bsh_decline, p_handle, CMD_GAMES,    0 );
@@ -846,24 +867,24 @@ void PLUGIN_USER_LOGIN( user_t *u )
           if( mover -> p1 -> userid == u -> userid )
           {
                mover -> p1 -> u = u;
-               user_output( CGAMES, NULL, u, "Your game of battleships against %s has resumed\n", mover -> p2 -> u -> current_name );
+               user_output( CGAMES, NULL, u, "Your game of battlesheep against Farmer %s has resumed\n", mover -> p2 -> u -> current_name );
 
-               user_output( CGAMES, NULL, mover -> p2 -> u, "Your battleships game against %s has resumed\n", u -> current_name );
+               user_output( CGAMES, NULL, mover -> p2 -> u, "Your battlesheep game against Farmer %s has resumed\n", u -> current_name );
                  
                if( mover -> turn != NULL )
                {
                     p = ( mover -> turn == mover -> p1 ) ? mover -> p2 : mover -> p1;
 
                     user_output( CGAMES, NULL, mover -> turn -> u, "It is your turn\n" );
-                    user_output( CGAMES, NULL, p -> u, "It is %s's turn\n", mover -> turn -> u -> current_name );
+                    user_output( CGAMES, NULL, p -> u, "It is Farmer %s's turn\n", mover -> turn -> u -> current_name );
                }
           }
           else if( mover -> p2 -> userid == u -> userid )
           {
                mover -> p2 -> u = u;
-               user_output( CGAMES, NULL, u, "Your game of battleships against %s has resumed\n", mover -> p1 -> u -> current_name );
+               user_output( CGAMES, NULL, u, "Your game of battlesheep against Farmer %s has resumed\n", mover -> p1 -> u -> current_name );
 
-               user_output( CGAMES, NULL, mover -> p1 -> u, "Your battleships game against %s has resumed\n", u -> current_name );
+               user_output( CGAMES, NULL, mover -> p1 -> u, "Your battlesheep game against Farmer %s has resumed\n", u -> current_name );
                
                if( mover -> turn != NULL )
                {  
@@ -890,13 +911,13 @@ void PLUGIN_USER_LOGOUT( user_t *u )
           {                
                if( !( mover -> p2 -> flags & ACCEPTED ) )
                {
-                    user_output( CGAMES, NULL, mover -> p2 -> u, "%s withdraws their battleships game offer\n", u -> current_name );
+                    user_output( CGAMES, NULL, mover -> p2 -> u, "%s withdraws their battlesheep game offer\n", u -> current_name );
                     remove = mover;
                }
                else if( mover -> p2 -> u != NULL )
                {
                     mover -> p1 -> u = NULL;
-                    user_output( CGAMES, NULL, mover -> p2 -> u, "Your battleships game is suspended\n" );
+                    user_output( CGAMES, NULL, mover -> p2 -> u, "Your battlesheep game is suspended\n" );
                }                            
                else
                     remove = mover;
@@ -905,13 +926,13 @@ void PLUGIN_USER_LOGOUT( user_t *u )
           {                
                if( !( mover -> p2 -> flags & ACCEPTED ) )
                {
-                    user_output( CGAMES, NULL, mover -> p1 -> u, "%s declines your battleships offer\n", u -> current_name );
+                    user_output( CGAMES, NULL, mover -> p1 -> u, "%s declines your battlesheep offer\n", u -> current_name );
                     remove = mover;
                }
                else if( mover -> p1 -> u != NULL )
                {
                     mover -> p2 -> u = NULL;
-                    user_output( CGAMES, NULL, mover -> p1 -> u, "Your battleships game is suspended\n" );
+                    user_output( CGAMES, NULL, mover -> p1 -> u, "Your battlesheep game is suspended\n" );
                }                            
                else
                     remove = mover;

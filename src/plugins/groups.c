@@ -708,7 +708,7 @@ void gr_info( user_t *u, int argc, char *argv[] )
 void gr_join( user_t *u, int argc, char *argv[] )
 {
      group_t *g;
-     user_t *found;
+     ulist_t *found;
      
      if( argc < 2 )
      {
@@ -724,7 +724,7 @@ void gr_join( user_t *u, int argc, char *argv[] )
           return;
      }
 
-     found = user_find_by_id( g -> users, u, u -> userid );
+     found = ulist_find_by_id( g -> users, u -> userid );
 
      if( found == NULL )
      {                              
@@ -735,12 +735,12 @@ void gr_join( user_t *u, int argc, char *argv[] )
      {
           command_output( "You are already in the \'%s\' group\n", g -> name );
      }
-}               
+}
 
 void gr_leave( user_t *u, int argc, char *argv[] )
 {
      group_t *g;
-     user_t *found;
+     ulist_t *found;
      
      if( argc < 2 )
      {
@@ -756,7 +756,7 @@ void gr_leave( user_t *u, int argc, char *argv[] )
           return;
      }
 
-     found = user_find_by_id( g -> users, u, u -> userid );
+     found = ulist_find_by_id( g -> users, u -> userid );
 
      if( found == NULL )
      {                              
@@ -813,7 +813,7 @@ void gr_emote( group_t *group, user_t *u, int argc, char *argv[] )
 {
      if( argc < 2 || cstrlen( argv[ 1 ] ) ==  0 )
      {
-          command_output( "Format : emote <action>\n" );
+          command_output( "Format : %s <action>\n", argv[ 0 ] );
           return;
      }
 
@@ -861,6 +861,104 @@ void gr_sing( group_t *group, user_t *u, int argc, char *argv[] )
      command_output( "%s ^%cYou sing o/~ %s ^%2$co/~^n\n", 
                      get_tag( group ), group -> colour, argv[ 1 ] );
 }                                                       
+
+void gr_dsay( group_t *group, user_t *u, int argc, char *argv[] )
+{                                  
+     char format[10];
+     char format2[10];
+     char *str;                  
+     user_t *target;
+     char *target_name;
+
+     if( argc < 2 || cstrlen( argv[ 1 ] ) == 0 )
+     {
+          command_output( "Format : %s <user> <message>\n", argv[ 0 ] );
+          return;
+     }         
+
+     target_name = argv[ 1 ];
+     argv[ 1 ] = next_token( argv[ 1 ]  );
+
+     if( *target_name == '\0' || *argv[ 1 ] == '\0' )
+     {
+          command_output( "Format : %s <user> <message>\n", argv[ 0 ] );
+          return;
+     }
+
+     target = user_find_by_name( group -> users, u, target_name );
+     if( target == NULL )
+          return;
+
+     str = argv[ 1 ];
+     
+     if ( strchr( str, '?' ) ) 
+     {
+          strcpy( format, "ask" );
+          strcpy( format2, "of "  );
+     }
+     else if( strchr( str, '!' ) )
+     {
+          strcpy( format, "exclaim" );
+          strcpy( format2, "to " );
+     }
+     else
+     {
+          strcpy( format, "say" );
+          strcpy( format2, "to " );
+     }
+
+     group_output_ex( CPUBLIC, u, group -> users, "%s ^%c%s %ss \'%s^%2$c\' %s%s^n\n", 
+                      get_tag( group ), 
+                      group -> colour, 
+                      u -> current_name, 
+                      format, 
+                      str,
+                      format2,
+                      target -> current_name 
+                    );
+
+     command_output( "%s ^%cYou %s \'%s^%2$c\' %s%s^n\n", 
+                      get_tag( group ), 
+                      group -> colour, 
+                      format, 
+                      str,
+                      format2,
+                      target -> current_name 
+                   );
+}
+
+void gr_demote( group_t *group, user_t *u, int argc, char *argv[] )
+{
+     user_t *target;
+     char *target_name;
+
+     if( argc < 2 || cstrlen( argv[ 1 ] ) == 0 )
+     {
+          command_output( "Format : %s <user> <message>\n", argv[ 0 ] );
+          return;
+     }         
+
+     target_name = argv[ 1 ];
+     argv[ 1 ] = next_token( argv[ 1 ]  );
+
+     if( *target_name == '\0' || *argv[ 1 ] == '\0' )
+     {
+          command_output( "Format : %s <user> <message>\n", argv[ 0 ] );
+          return;
+     }
+
+     target = user_find_by_name( group -> users, u, target_name );
+     if( target == NULL )
+          return;
+
+     group_output( CPUBLIC, group -> users, "%s ^%c%s %s (to %s)^n\n", 
+                      get_tag( group ), 
+                      group -> colour, 
+                      u -> current_name, 
+                      argv[ 1 ],
+                      target -> current_name 
+                 );
+}
 
 void gr_echo( group_t *group, user_t *u, int argc, char *argv[] )
 {
@@ -928,12 +1026,12 @@ x> command redirect to group
 
 
 
-char dyn_list [] = "u\'\"e;:s()t~+hwxl>";
+char dyn_list [] = "u\'\"e;:s()t~+hwxl>[]";
 
 int PLUGIN_DYNAMIC_COMMAND( user_t *u, int argc, char *argv[] )
 {   
      group_t *gmover;
-     user_t *found;
+     ulist_t *found;
                       
      if( strlen( argv[ 0 ] ) != 2 )
           return 0;
@@ -950,7 +1048,7 @@ int PLUGIN_DYNAMIC_COMMAND( user_t *u, int argc, char *argv[] )
 
      if( gmover )
      {             
-          found = user_find_by_id( gmover -> users, u, u -> userid );
+          found = ulist_find_by_id( gmover -> users, u -> userid );
 
           if( found == NULL )
           {
@@ -977,7 +1075,12 @@ int PLUGIN_DYNAMIC_COMMAND( user_t *u, int argc, char *argv[] )
                                 break;
                     case '+'  : gr_echo( gmover, u, argc, argv );
                                 break;
+                    case 'w'  :
                     case 'l'  : gr_look( gmover, u, argc, argv );
+                                break;
+                    case '['  : gr_dsay( gmover, u, argc, argv );
+                                break;
+                    case ']'  : gr_demote( gmover, u, argc, argv );
                                 break;
                }
           }
@@ -1093,7 +1196,7 @@ void plugin_init( plugin_s *p_handle )
 
      /* TO DO */
 
-     /* add commands */
+     /* group manipulation commands */
 
      add_command( "group_list",   gr_list,   p_handle, CMD_GROUP, 0 );
      add_command( "grl",          gr_list,   p_handle, CMD_INVIS, 0 );
@@ -1126,6 +1229,8 @@ void plugin_init( plugin_s *p_handle )
 
      add_command( "group_leave",   gr_leave, p_handle, CMD_GROUP,    0 );
      add_command( "grq",           gr_leave, p_handle, CMD_INVIS, 0 );
+
+     /* commands for your default group */
 
      add_command( "say",       say,     p_handle, CMD_GROUP | CMD_PUBLIC | CMD_BASIC,     0 );
      add_command( "`",         say,     p_handle, CMD_INVIS,  0 );

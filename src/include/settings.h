@@ -18,7 +18,7 @@
 #ifndef __SETTINGS_H
         #define __SETTINGS_H
       
-#define ADMIN_PASSWORD "password"
+#define ADMIN_PASSWORD "foobar"
 
 #define DEFAULT_TERMSIZE_X 80
 #define DEFAULT_TERMSIZE_Y 24

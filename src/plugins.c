@@ -92,6 +92,12 @@ int plugin_register( char *plugin_name )
         handle = NULL;
 
         handle = PLUGIN_OPEN( full_path );
+        if( handle == NULL )
+        {             
+             perror( dlerror( ) );  
+             return -1;
+        }        
+
         stat( full_path, &sbuf );
 
         if( handle == NULL )

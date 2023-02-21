@@ -157,7 +157,8 @@ void changes( user_t *u, int argc, char *argv[] )
 
 void version( user_t *u, int argc, char *argv[] )
 {
-     command_output( "\n%s v%s   Compiled %s\n", SERVER_NAME, VERSION, ctime( &( universe -> compile_time ) ) );
+     command_output( "\n%s v%s   Compiled %s\n\nhttp://www.cse.dmu.ac.uk/~se98jg/hive\n", 
+                     SERVER_NAME, VERSION, ctime( &( universe -> compile_time ) ) );
 }
 
 void idea( user_t *u, int argc, char *argv[] )

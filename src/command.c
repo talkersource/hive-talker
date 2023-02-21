@@ -74,6 +74,27 @@ command_t *find_subcommand( command_t *command, char *name )
      return NULL;
 }
 
+char *next_token( char *start )
+{            
+     char *ptr;
+
+     ptr = start;
+
+     if( !ptr || !*ptr )
+          return NULL;
+
+     while( *ptr == ' ' )
+          ptr ++;
+
+     while( *ptr && *ptr != ' ' )
+          ptr++;
+
+     if( *ptr )
+          *ptr++ = 0;
+
+     return ptr;
+}
+
 char **tokenize( char *name, char *body, int rtokens, int *argc )
 {
      char **argv;

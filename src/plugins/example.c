@@ -296,11 +296,18 @@ void subtest( user_t *u, int argc, char *argv[] )
      command_output( "no sub command, command executed instead\n" );
 }
 
+void hello( user_t *u, int argc, char *argv[] )
+{
+     user_output( CGAMES, NULL, u, "hello world\n" );     
+}
+
 /* required */
 /* called as the plugin is loaded */
 void plugin_init( plugin_s *p_handle )
 {            
      example_h = p_handle;
+
+     add_command( "HELLO", hello, p_handle, CMD_SETTINGS, 0 );
      
      add_command( "setupbomb", setupbomb, p_handle, CMD_INVIS ,0 );
 

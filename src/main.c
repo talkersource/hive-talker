@@ -49,7 +49,7 @@ void universe_init( char *bin_name )
      sprintf( str, "%s/bin/%s", BASE_DIR, bin_name );
      stat( str, &sbuf );
 
-     universe -> compile_time = sbuf.st_ctime;
+     universe -> compile_time = sbuf.st_mtime;
 
      universe -> shutdown = -1;
 

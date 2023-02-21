@@ -22,6 +22,7 @@
 
 /* command */
 
+extern char *next_token( char * );
 extern command_t *find_command( char *, command_t ** );
 extern void add_command( char *, void ( *f ) ( ), plugin_s *, int32, int );
 extern void add_subcommand( char *, char *, void ( *f ) ( ), plugin_s *, int32, int );
@@ -55,7 +56,7 @@ extern void debug( uint8, char *, ... );
 extern char *user_title( user_t * );
 
 /* user */
-extern user_t *user_find_by_id( ulist_t *, user_t *, int );
+extern ulist_t *ulist_find_by_id( ulist_t *, int );
 extern user_t *user_find_by_name( ulist_t *, user_t *, char * );
 extern user_t *user_find_on_by_id( user_t *, int );
 extern user_t *user_find_on_by_name( user_t *, char * );

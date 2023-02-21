@@ -99,8 +99,8 @@ void group_tell( user_t *u, int argc, char *argv[] )
      char     format[10];       
      char     format2[10];
      char     *ptr;
-     ulist_t  *users;
-     user_t   *target, *temp;
+     ulist_t  *users, *temp;
+     user_t   *target;
      string_t *names;
 
      users = NULL;
@@ -113,8 +113,9 @@ void group_tell( user_t *u, int argc, char *argv[] )
 
           if( target == NULL )
                return;
-
-          temp = user_find_by_id( users, target, target -> userid );
+                                  
+          /* search for the user in the list */
+          temp = ulist_find_by_id( users, target -> userid );
           if( !temp )
           {
 
@@ -208,8 +209,8 @@ void tell( user_t *u, int argc, char *argv[] )
 void group_remote( user_t *u, int argc, char *argv[] )
 {           
      char     *ptr;
-     ulist_t  *users;
-     user_t   *target, *temp;
+     ulist_t  *users, *temp;
+     user_t   *target;
      string_t *names;
 
      users = NULL;
@@ -223,7 +224,7 @@ void group_remote( user_t *u, int argc, char *argv[] )
           if( target == NULL )
                return;
 
-          temp = user_find_by_id( users, target, target -> userid );
+          temp = ulist_find_by_id( users, target -> userid );
           if( !temp )
           {
                if( target -> inactivemsg )

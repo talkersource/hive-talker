@@ -1,5 +1,6 @@
 ^n(Left)           ^YTexasPete lab 34  lib 62  con 4
                  ^YGalak     lab 39  lib 59  con 2 
+                 ^YKebabRhyl lab 32  lib 62  con 6
                  ^YDark      lab 36  lib 56  con 8 
 ^n(Moderate Left)  ^yVanvan    lab 42  lib 49  con 9
                  ^yWhippet   lab 32  lib 51  con 17
@@ -10,6 +11,7 @@
                  ^yShania    lab 29  lib 43  con 28 
                  ^yTony      lab 27  lib 45  con 28
 ^n(Centralist)     ^GAce       lab 26  lib 38  con 36
+                 ^GDocKen    lab 28  lib 37  con 35
 ^n(Moderate Right) ^RNairn     lab 40  lib 31  con 29
                  ^RHorace    lab 40  lib 30  con 30  
                  ^RPeterPan  lab 42  lib 22  con 36 

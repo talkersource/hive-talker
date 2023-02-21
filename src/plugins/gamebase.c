@@ -106,6 +106,8 @@ void rules( user_t *u, int argc, char *argv[] )
           command_output( get_textmessage( "rules_bships" ) );
      else if( !strcasecmp( argv[ 1 ], "quiz" ) )
           command_output( get_textmessage( "rules_quiz" ) );
+     else if( !strcasecmp( argv[ 1 ], "connect4" ) || !strcasecmp( argv[ 1 ], "cfour" ) || !strcasecmp( argv[ 1 ], "c4" ) )
+          command_output( get_textmessage( "rules_cfour" ) );
      else
           command_output( "Unknown game \'%s\'!\n", argv[ 1 ] );
 }

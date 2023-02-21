@@ -226,12 +226,30 @@ int ulist_count_online( ulist_t *ul )
      return count;
 }
               
-/* returns the user or NULL if user is not in the list */
-user_t *user_find_by_id( ulist_t *ul, user_t *u, int userid )
+/* returns the ulist_t pointer for the user or NULL if the user is not in the list */
+/* regardless of whether or not they are connected */
+ulist_t *ulist_find_by_id( ulist_t *ul, int userid )
 {
      ulist_t *mover;
 
      mover = ul;
+
+     while( mover )
+     {                          
+          if( mover -> userid == userid )
+               return mover;
+
+          mover = mover -> next;
+     }
+
+     return NULL;     
+}
+
+user_t *user_find_on_by_id( user_t *u, int userid )
+{
+     ulist_t *mover;
+
+     mover = universe -> connected;
 
      while( mover )
      {                          
@@ -244,6 +262,7 @@ user_t *user_find_by_id( ulist_t *ul, user_t *u, int userid )
 
      return NULL;     
 }
+
 
 user_t *user_find_by_name( ulist_t *ul, user_t *u, char *name )
 {                  
@@ -323,24 +342,6 @@ user_t *user_find_by_name( ulist_t *ul, user_t *u, char *name )
 
        return NULL;
 }                   
-
-user_t *user_find_on_by_id( user_t *u, int userid )
-{
-     ulist_t *mover;
-
-     mover = universe -> connected;
-
-     while( mover )
-     {                          
-          if( ( mover -> u -> sys_flags & USF_LOGGED_IN ) &&
-              mover -> userid == userid )
-               return mover -> u;
-
-          mover = mover -> next;
-     }
-
-     return NULL;     
-}
 
 user_t *user_find_on_by_name( user_t *u, char *name )
 {                  

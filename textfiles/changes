@@ -1,13 +1,11 @@
 
   ^P..(^YRecent Changes^P)...............................................^n
   ^P:                                                               ^P:^n
-  ^P:  ^Y* ^cCommand group_examine renamed to group_info (gri)          ^P:^n
-  ^P:  ^Y* ^cShortcuts added for dsay and demote (see help files)       ^P:^n
-  ^P:  ^Y* ^cTitle added to 'who'                                       ^P:^n
-  ^P:  ^Y* ^cPage 2 of profiles added (profile personal)                ^P:^n
-  ^P:  ^Y* ^cDMU Chat compatibility added                               ^P:^n
+  ^P:  ^Y* ^cConnect 4                                                  ^P:^n 
+  ^P:  ^Y* ^cQuiz is back                                               ^P:^n
+  ^P:  ^Y* ^cGroups bug fixed                                           ^P:^n
+  ^P:  ^Y* ^cdsay and demote added for groups                           ^P:^n
   ^P:                                                               ^P:^n
-  ^P:  ^gNew commands: title, set                                     ^P:^n
-  ^P:       ^gUpdated: group_info, connected, who, profile            ^P:^n  
+  ^P:  ^gNew commands: cfour, quiz                                    ^P:^n
   ^P:                                                               ^P:^n
   ^P:...............................................................:^n

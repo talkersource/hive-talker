@@ -139,6 +139,9 @@ void login_end( user_t *u )
           }
      
           system_output( u, "%s", get_textmessage( "changes" ) );
+
+          if( !u -> password )
+               system_output( u, "\n^WWarning, you have no password, please set one with the 'password' command^n\n" );
      }
      
      if( !old )
@@ -475,7 +478,10 @@ void handle_name( user_t *u, char *str )
 
           if( load_user( u ) )
           {
-               password_ques( u );
+               if( u -> password )
+                    password_ques( u );
+               else
+                    login_end( u );
                return;
           }
 
@@ -500,6 +506,8 @@ void handle_name( user_t *u, char *str )
 
 user_t *login_start( int user_fd, char *ip )
 {
+     int r;
+
      user_t *u = user_alloc( user_fd, ip );
      universe -> connected = ulist_add( universe -> connected, u );
 
@@ -508,7 +516,15 @@ user_t *login_start( int user_fd, char *ip )
      if( strstr( ip, "146.227" ) == ip )
           system_output( u, "\n%s\n", get_textmessage( "connect_screen.dmu" ) );
      else
-          system_output( u, "\n%s\n", get_textmessage( "connect_screen" ) );
+     {
+          r = ( rand() % 3 ) + 1;
+          switch( r )
+          {
+          case 1 : system_output( u, "\n%s\n", get_textmessage( "connect_screen.1" ) ); break;
+          case 2 : system_output( u, "\n%s\n", get_textmessage( "connect_screen.2" ) ); break;
+          case 3 : system_output( u, "\n%s\n", get_textmessage( "connect_screen.3" ) ); break;
+          }
+     }
 
      password_mode( u, 0 );
      prompt_user( u, "Please enter your nickname: " );

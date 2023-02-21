@@ -1,9 +1,9 @@
-BASE_DIR     = /home/james/hive
+BASE_DIR     = /home/hive/hive
 SRC_DIR      = $(BASE_DIR)/src
 BIN_DIR      = $(BASE_DIR)/bin
 BINARY_NAME  = hive_d
 SERVER_NAME  = "The Hive"
-VERSION      = "0.32"
+VERSION      = "0.33"
 PRIMARY_PORT = 5000
 ADNS_DIR     = $(BASE_DIR)/adns-1.0/src
 
@@ -84,7 +84,7 @@ binfiles.o : binfiles.c
 	@( echo "Compiling binfiles.c" )
 	@( $(CC) $(CFLAGS) binfiles.c )
 
-plugins : example.so textfiles.so system.so history.so groups.so help.so gamebase.so info.so save.so admin.so private.so user_settings.so profiles.so bships.so elite.so prophecy.so noop.so
+plugins : example.so textfiles.so system.so history.so groups.so help.so gamebase.so info.so save.so admin.so private.so user_settings.so profiles.so bsheep.so elite.so prophecy.so noop.so cfour.so quiz.so
 	@( echo "Plugins Built" )
 
 example.so : plugins/example.c
@@ -178,12 +178,19 @@ profiles.so : plugins/profiles.c
 	@( mv profiles.so $(BIN_DIR)/plugins )
 	@( chmod 775 $(BIN_DIR)/plugins/profiles.so )
 
-bships.so : plugins/bships.c
-	@( echo "Building plugin bships.so" )
-	@( $(CC) $(CFLAGS) $(CMOD) -c -Iplugins/include plugins/bships.c )
-	@( $(LD) $(LDMOD) -o bships.so bships.o )
-	@( mv bships.so $(BIN_DIR)/plugins )
-	@( chmod 775 $(BIN_DIR)/plugins/bships.so )
+bsheep.so : plugins/bsheep.c
+	@( echo "Building plugin bsheep.so" )
+	@( $(CC) $(CFLAGS) $(CMOD) -c -Iplugins/include plugins/bsheep.c )
+	@( $(LD) $(LDMOD) -o bsheep.so bsheep.o )
+	@( mv bsheep.so $(BIN_DIR)/plugins )
+	@( chmod 775 $(BIN_DIR)/plugins/bsheep.so )
+
+cfour.so : plugins/cfour.c
+	@( echo "Building plugin cfour.so" )
+	@( $(CC) $(CFLAGS) $(CMOD) -c -Iplugins/include plugins/cfour.c )
+	@( $(LD) $(LDMOD) -o cfour.so cfour.o )
+	@( mv cfour.so $(BIN_DIR)/plugins )
+	@( chmod 775 $(BIN_DIR)/plugins/cfour.so )
 
 quiz.so : plugins/quiz.c
 	@( echo "Building plugin quiz.so" )
