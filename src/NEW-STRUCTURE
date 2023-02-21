@@ -1,0 +1,42 @@
+This is the proposed new structure for The Hive codes
+
+
+CORE                     BASE PLUGINS               COMMAND PLUGINS
+socket handling          string lib                 admin
+plugin handling          user struct                bships
+crash recovery           ulists                     elite
+signal handing           command storage            gamebase?
+main                     command parser             groups
+                         core commands              help
+                         file handling              info
+                         textfiles                  noop
+                         basecomms                  private
+                         login                      profiles
+                         tools                      quiz
+                         history buffers            save
+                         {lists}                    system
+                         {aliases}                  user_settings
+                         {editor}
+
+At the moment most of the functionality listed in the BASE PLUGINS and CORE
+sections are in the main executable. This means that any modifcations made
+will require a hard reboot. To move this functionality to the current plugin
+system will be difficult due to the restrictive nature of the dependancy 
+system (ie no circular dependancies and all dependants must be unloaded before
+a plugin can be reloaded)
+
+The new design is an attempt to fix this issue. Only the bare essentials needed
+to maintain connections, handle plugins and crash recovery will be in the main
+executable. Everything else will be dynamically loaded. COMMAND PLUGINS will
+be able to be individually reloaded as before because they will not have any
+dependants. Reloading a BASE PLUGIN will be a bit more complicated because they
+will almost certainly have one or more dependants. The easiest way to do it will
+be the following:
+
+Unload all COMMAND PLUGINS
+Unload all BASE PLUGINS (in reverse order)
+Reload BASE PLUGINS (in a specific order)
+Reload COMMAND PLUGINS
+
+This will give us the functionality of a soft reboot whilst maintaining the connections
+as the small core program can always be running.

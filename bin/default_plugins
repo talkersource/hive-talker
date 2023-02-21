@@ -1,0 +1,20 @@
+#
+#  The Hive - plugins to load at startup
+#
+
+textfiles.so
+history.so
+system.so
+groups.so
+private.so
+user_settings.so
+info.so
+save.so
+profiles.so
+help.so
+admin.so
+gamebase.so
+bships.so
+quiz.so
+elite.so
+prophecy.so

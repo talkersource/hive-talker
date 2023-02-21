@@ -1,0 +1,19 @@
+     )
+   /            ;
+   }    __-___.'_    ,   _,
+  ( ,-""____,____>===---=._
+  "' .-"       II   '      "-.        _____ _          _  _ _
+   ,'          /\   .                |_   _| |_  ___  | || (_)_ __ __ 
+   )      .  /\())\,.   '              | | | ' \/ -_) | __ | \ V / -_)
+   }    '   (())\\)) :        .'.:.    |_| |_||_\___| |_||_|_|\_/\___|
+  I   .   : //\\//\\  .       :  ;/
+  I     ,  '\\//))//. .       \ // .-oo      Internet Community
+  }    ;   .(())//)) '       .;-;./ \_|
+   )      : .\/())/  .      :.\.\.;''      
+   ]   ,  .  ' \/ .            \ \\
+   ]        .    ;  .           ' ''
+
+The source code to The Hive is licensed under the terms of the GNU GPL.
+However, The Hive was written as a single talk server, and not as a base code
+
+To install on a GNU/Linux system simply change BASE_DIR in the Makefile

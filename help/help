@@ -1,0 +1,799 @@
+#
+#     Core help files
+#
+#     The following special characters are used to format topics
+#     
+#     %1 list of names of the topic
+#     %2 format
+#     %3 example
+#     %4 aliased to
+#     %5 see also
+#
+#     \n empty line ( with style formatting )
+#
+#
+#     For example :
+#     ----------------------------------------------
+#     %1 say
+#     %2 say <message>
+#     %3 say hello
+#     Say something to users in the same room as you
+#     %4 ' and `
+#     %5 emote
+#     ----------------------------------------------
+#     will produce something like:
+#
+#  ...../Online Help System\........................./say\.........
+#  :                                                              :
+#  :     Format  : say <message>                                  :
+#  :     Example : say hello                                      :
+#  :                                                              :
+#  :     Say something to users in the same room as you           :
+#  :                                                              :
+#  :     Aliased to : ' and `                                     :
+#  :     See also   : emote                                       :
+#  :                                                              :
+#  :..............................................................:
+#
+
+#
+# TUTORIAL
+#
+
+%1 start 1 intro index newbie general
+Welcome to the Hive talker
+\n
+Assuming you have logged on (well you must be to read this!)
+you will want to know how to get talking to people and get used
+to the features of the talker.
+\n
+The first thing to do is see who is online. This can be done by
+typing 'who', which will display a list of all users currently
+active on the talker. 
+\n
+Type 'commands' for a list of the basic commands and then 'help'
+followed by the command name for specific help on each command
+
+#
+# PRIVATE COMMUNICATION
+#
+
+%1 tell . >
+%2 tell <user> <message>
+%3 tell bort hello
+Say something privately to a specific user.
+%4 . and >
+%5 remote rsing rthink
+
+%1 remote , <
+%2 remote <user> <action>
+%3 remote bort waves
+Perform some action privately, the output will be your name
+followed by whatever you typed and it will go to the 
+specified user.
+%4 , and <
+%5 tell rsing rthink
+
+%1 rsing rs (
+%2 rsing <user> <song>
+%3 rsing bort when it comes to foobar, I am the best
+Sing something privately to a specific user.
+%4 rs and (
+%5 tell remote rthink
+
+%1 rthink rt *
+%2 rthink <user> <thought>
+%3 rthink bort when it comes to foobar, I am the best
+Think something privately to a specific user.
+%4 rt and *
+%5 tell remote rsing
+
+%1 history review
+The last 10 private communications sent to you by other users
+are stored in a buffer. Use this command to view the buffer
+%4 review
+
+#
+# GROUPS
+#
+
+%1 group groups chan chanels channel
+The groups system has been designed to enable a set of users
+to communicate on a specific subject area without involving
+those users that do not wish to take part
+\n
+There are two types of group available:
+\n
+Public  - any user can join or leave the group at any time
+Private - invite only group (not yet implemented)
+%5 group_list group_usage group_join group_create 
+
+%1 group_usage                    
+When you join a group you are told its letter. If you have
+forgotten it you can obtain it with the group_info command
+\n
+You combine the group letter with another letter to execute
+commands on the group, letters available are:
+u - say      + - echo       w - who
+e - emote    [ - dsay       l - look
+s - sing     ] - demote     i - info
+t - think    h - history    
+\n
+For example if the group letter is 'x' then the command 'xu' will
+say something to everyone in the group, 'xw' will list the users
+in the group etc.
+%5 group_default groups group_info group_join
+       
+%1 group_tag   
+The group tag is the text displayed on the left hand side of the
+screen before a message when the group channel is being used. It
+is a short phrase between two equals signs, for example: =bot= 
+might be the tag for a group discussing artificial intelligence. 
+The only group without a tag is the hard coded group 'General'
+%5 groups group_create
+
+%1 group_default
+Soon it will be possible to set your default group which will be
+the group that the following commands use:
+say, emote, sing, think, echo, dsay, demote, history, who, look
+\n
+See individual help files for more information on each command
+%5 group_usage groups
+
+%1 group_leave grq
+%2 group_leave <group name>
+Leave the specified group
+%4 grq
+%5 groups group_usage 
+
+%1 group_join grj   
+%2 group_join <group name>
+Join the specified group. Use 'group_list' to find out the names
+of groups in existance. See the help file 'group_usage' for info
+on how to execute commands within the group
+%4 grj
+%5 groups group_list group_usage
+
+%1 group_info gri
+%2 group_info <group name>
+Obtain specific information about a single group
+%4 gri
+%5 groups group_usage
+
+%1 group_destroy grd
+%2 group_destroy <group name>
+Permanently remove a group. You must be the group creator in 
+order to remove it
+%4 grd
+%5 groups
+
+%1 group_create grc
+%2 group_create <group name> [public|private]
+A user is free to set up any number of groups they wish. See
+the help file 'groups' for an overview of what they are. By
+default a group is created as public unless specified. You
+are required to give certain information about the group
+before it is created. This is explained during the creation
+process
+%4 grc
+%5 groups    
+
+%1 group_list grl
+List the available groups, ordered by popularity
+%5 group_join group_info
+
+%1 say ' ` talk
+%2 say <message>
+%3 say hello
+Say something to everyone in your default group
+%4 ' and `
+%5 groups dsay 
+
+%1 emote : ;
+%2 emote <action>
+%3 emote waves
+Perform an action to everyone in your default group
+%4 : and ;
+%5 groups demote
+
+%1 sing )
+%2 sing <song>
+%3 sing when it comes to foobar, I am the best
+Sing a song to everyone in your default group
+%4 )
+
+%1 think ~
+%2 think <thought>
+%3 think when it comes to foobar, I am the best
+Think a thought to everyone in your default group
+%4 ~
+
+%1 echo + aecho becho
+%2 echo <message>
+%3 echo ><>.oO
+Echo a message to everyone in your default group
+%4 +
+
+%1 dsay [
+%2 dsay <user> <message>
+%3 dsay bort hello
+Say something to everyone in your default group, but directed 
+to a particular user
+%4 [
+%5 say demote
+
+%1 demote ]
+%2 demote <user> <action>
+%3 demote bort waves
+Perform an action to everyone in your default group, but
+directed to a particular user
+%4 ]
+%5 emote dsay
+
+#
+# GETTING INFO
+#
+
+%1 activity active idle idol
+Lists users that are active. The graphical bar will give you
+a quick glance guide to when the users last performed an action
+\n
+Each equals sign on the bar represents one minute
+\n
+After 45 minutes without activity, a user will disappear
+%4 active idle
+%5 who connected inactivemsg 
+
+%1 commands
+Display a list of the available commands.
+
+%1 connected
+This is the only command that displays all the users connected
+regardless of inactivity. The time of the last user activity is
+displayed along with the users IP address
+%4 lsi
+%5 activity who whot 
+
+%1 lsi
+Let me take time to define in a Rhyme
+LSI Three reasons why I carry on
+And my mind feels strong so hold on
+I know that this is the one
+With a Love so Strong and Emotion Intense
+I need your Love Sex Intelligence
+It makes sense to keep playing the Game
+Our Dimension has changed
+You're putting me on a plane of Mind Peace
+And all our problems will cease
+And on the rights to your heart I want a permanent lease
+Founded on Trust and built on Strong ground
+Keeping those walls just tumbling down between us
+With no stress and no fuss LSI is the bond between us
+And I like it like that without any pretence
+I need your Love Sex Intelligence
+%5 connected
+
+%1 whot
+List users logged onto the talker together with low level
+socket and terminal information.
+%5 connected who
+
+%1 who w
+List users logged onto the talker.
+%4 w
+%5 connected whot
+
+%1 look l
+Please refer to a dictionary for help with this command
+
+%1 saved
+Lists all the users who have saved their data on the 
+talker. The user ID number is given in brackets
+%5 save
+
+%1 profile p
+%2 profile [<user>] [<page>]
+%3 profile bort
+Obtain information on a particular user. If no user is supplied
+then your own user information will be displayed 
+\n
+There are several pages of information which can be obtained:
+Page 1 - User statistics  (shortcut 'profile' or 'p')
+Page 2 - Personal info    (shortcut 'examine' or 'x')
+%4 p
+%5 set
+
+%1 examine x
+%2 examine [<user>]
+%3 examine bort
+Obtain personal information on a particular user. If no user is 
+supplied then your own personal information will be displayed
+%4 x
+%5 profile set
+
+%1 set s
+%2 set <sub command> <value>
+%3 set irl_name Joe Barns                        
+Set is used to set and change your personal information.
+\n
+Typing 'set' without any arguments will list types of info
+that can be set
+%4 s
+%5 profile
+
+%1 title
+%2 title <your title>
+%3 title the new bee
+Sets your title which is displayed beside your name in the
+'who' command
+%5 who
+
+#
+# SYSTEM COMMANDS
+#
+
+%1 bug
+%2 bug <bug description>
+Use this command to log any bugs that you may have found on the
+system.  Please do not abuse this command as it wastes time and
+slows down the development of the system.
+%5 idea
+
+%1 changes
+Lists recent changes or modifications to the talker
+
+%1 ep
+%2 ep <plugin name>
+%3 ep quiz.so
+This command displays information about a plugin, such as the
+version, author and other technical information
+%5 plugins version
+
+%1 help ? info man
+%2 help <subject>
+%3 help help
+Welcome to The Hive help system, please enter a subject such as
+a command name, a concept such as 'groups' or 'start' for a 
+tutorial
+%4 ? info man
+
+%1 idea
+%2 idea <your idea>
+Use this command to log any ideas you may have about improving
+the system. Please do not abuse this command as it wastes time
+and slows down the development of the system
+%5 bug
+
+%1 plugins
+List the loaded plugins, their versions and compilation dates
+%5 version
+
+%1 quit
+Use this command to exit the talk server. If you have saved your
+character previously, your save data file will be updated
+
+%1 version
+Provides server version information
+%5 plugins
+
+%1 debug              
+%2 debug <level>
+You can choose to recieve talker debugging information if you
+are writing a plugin for the talker, or just if you are
+interested in how the talker works. You can set how much
+debugging information you want to see ranging from level 0
+(none) to level 5 (all). Type debug on its own to list the
+various levels and see your current level 
+
+#
+# USER SETTINGS
+#
+
+%1 colour color
+%2 colour [on|off]
+This command toggles ANSI colour output. If your terminal does not
+support ANSI colour codes it is recommended to turn it off
+%5 testcard clients
+
+%1 inactivemsg imsg idlemsg
+%2 inactivemsg <message>
+%3 inactivemsg lunch time
+Set a message saying that you are inactive. If a user tries to
+tell you something he/she will be told you are inactive and the
+message you specified. It is polite practice to do this if you
+are inactive for a length of time
+%4 imsg idlemsg
+%5 activity
+
+%1 password
+Set or change the password for your user 
+%5 save
+
+%1 recap
+%2 recap <your username in lower or uppercase variants>
+%3 recap bOrT
+Alter the capitalisation of your name. So "Bort" could become
+"bOrT" or even "BORT". You can only recap your own name
+
+%1 save
+Save your user data for future visits. Ten minutes login time
+is required before you can save for the first time
+
+%1 prompt
+%2 prompt <your prompt> | off
+Set the text in your prompt, or turn it off
+
+%1 testcard fingerpaint
+Show all the ANSI colours and their associated colour wands.
+Colours will only be seen if you have colour set to on and
+you have a terminal or client capable of understanding
+ANSI colour codes
+%5 colour clients 
+
+#
+# GAMES AND DIVERSIONS
+#
+
+%1 games
+Battleships, Dice, Quiz and Prophecy are available
+%5 rules bsh dice quiz prophecy
+
+%1 dice roll d
+The classic dice game
+\n
+See 'rules dice' for the essential guide to the game
+%4 roll and d
+%5 rules games
+
+%1 data
+%2 data <planet name>
+%3 data Wigan
+This command displays information about a planet listed on the 
+map. It has been included as a tribute to the classic computer
+game 'Elite'
+%5 map
+
+%1 map
+Shows the star chart. This command is included as a tribute to
+the classic computer game 'Elite'
+%5 data
+
+%1 prophecy
+Displays a random quote from the all knowing Johnny
+%5 games
+
+%1 quiz
+The quiz game. You may run your own quiz or play in other
+people's quizzes.
+\n
+Quizmaster Subcommands:
+ start               - begins a quiz, if no quiz is running.
+ stop                - end the current quiz.
+ question <question> - begin a new round with <question>.
+ tick <player>       - Mark <player>'s answer correct.
+ cross <player>      - Mark <player>'s answer incorrect.
+ report              - View the status of the quiz.
+\n
+Player Subcommands:
+ join                - Join the quiz.
+ leave               - Leave the quiz.
+ answer <answer>     - Answer the current question.
+ who                 - See who's playing and their scores.
+%5 rules games
+
+%1 bsh bships battleships
+%2 bsh [<opponent>|<sub command>]
+'rules bsh' will present you with a breif overview of the game
+\n
+Use 'bsh <opponent name>' to challenge a user
+You can the randomise your board layout using 'bsh random'
+until you are happy with the selection. When you are ready
+type 'bsh ready' to commence.
+\n
+You will the take it in turns to fire your cannon balls.
+When it is your turn select a grid position on your
+opponents grid for example 'bsh d4'
+If you hit one of your opponents ships you may use the
+element of shock to take another turn.
+\n
+Type 'bsh who' to list the games in progress. You can view
+other peoples games using 'bsh view <game number> where the
+number is obtained from the output to 'bsh who'
+%5 games
+
+%1 toryhunt
+This command displays a list of some users and their results on
+an online political alignment test. The test is located at
+www.yougov.com, but seems to be down at the last check.
+Another interesting test can be found at www.politicalcompass.org
+
+#
+# ADMINISTRATION
+#
+
+%1 admin
+Enter administration mode
+\n
+This temporary command will be removed in the future
+
+%1 up
+%2 up <plugin name>
+%2 up test.so
+Administration Command
+\n
+Unload a plugin from the talker
+%5 lp rp
+
+%1 lp
+%2 lp <plugin name>
+%2 lp test.so
+Administration Command
+\n
+Load a plugin into the talker
+%5 rp up
+
+%1 rp
+%2 rp <plugin name>
+%2 rp test.so
+Administration Command
+\n
+Reload a plugin that is already loaded
+%5 lp up
+
+%1 shutdown
+%2 shutdown <number of seconds> <reason>
+Administration Command
+\n
+Shut the talk server down
+%5 abort
+
+%1 abort
+Administration Command
+\n
+Abort a shutdown in progress
+%5 shutdown
+
+#
+# MISC
+#
+
+%1 motd
+Match of the day. Like the british institution, this command
+has expired and is replaced with changes
+%5 changes
+
+%1 hangman
+There are three basic ways to make a noose. The first way is 
+running the 'tail' of rope through a fixed loop on the end of 
+that same rope. This may be a spliced-loop or a knotted-loop 
+like the bowline.
+
+The second way to make a noose is to tie a running knot (a 
+simple knot or hitch) round the standing part of the rope in 
+a way that pulling on the knot-side closes the loop. This is
+the most common way for making nooses. It makes the loop to 
+close almost as easy as a noose using a fixed loop as a 
+running knot.
+
+The third way is to tie a running knot in a way that pulling 
+the knot is opening the loop.
+
+%1 sheepshank
+Make a long bight in a topgallant back-stay, or any rope 
+which it is desirable to shorten, and taking a half hitch 
+near each bend
+\n
+Wire rope cannot be so treated, and it is injurious to 
+hemp rope that is large and stiff
+
+%1 rules
+Hive Rules
+\n
+ * No drug
+ * No haslehoff
+ * NO CAPITALS
+ * No anti capitalism (this rule sponsored by the zinger burger)
+ * emote No emote
+ * At least two days login time is required in order to fish
+ * No discussion of multi-racial pornography
+ * No discussion of knots, computers or babylon 5
+ * No british telecom!
+
+%1 dixon
+am hammy twaart
+
+%1 dixons nuneaton
+Nuneaton Dixons - pounds 5.99 for TWO AA batteries - what a skank!
+
+%1 bowline
+Begin by formatting an overhand loop in the standing part. Then 
+take the free end up through the eye, around the standing part 
+and back where it came from.
+
+%1 me sex
+You're beyond it.
+
+%1 trout
+Trout belong to the salmon family, Salmonidae, which are native 
+only to the West Midlands. The most common species include the 
+Rainbow Trout, Brook Trout and Brown Trout, all of which are 
+good for sport. Rarer species include the mountain-dwelling 
+Golden Trout and the Cut-Throat Trout, so-named because it is 
+very
+%5 rainbow
+
+%1 rainbow
+The Rainbow Trout, named after the Thames children's TV program, 
+is sought after by fly-fishers around the world. They can put up 
+a good struggle, especially as they reach the 5-6lb mark. It's 
+rare to catch more than a 6 pounder, even though adult fish have 
+been known to grow to over 20lb
+\n
+The Rainbow Trout is best caught with a fly in warm conditions, 
+but maggots and worms can work with a light ledger.
+%5 trout
+
+%1 credits
+Thanks to everyone who has contributed to The Hive community
+\n
+Please type 'saved' for a list of contributors
+
+%1 staff
+There are no staff on The Hive as equality is one of the guiding
+principles of the design. Do you think they are needed?
+
+%1 residency resident res res_me
+Since this talker is not themed on a house the term residency
+does not really make much sense. It was popularised by ewtoo
+which blindly copied the term from Cheeseplants House. If
+you want to save your user data for future visits please use
+the 'save' command
+
+%1 clients
+The standard telnet client supplied with the Microsoft Windows
+operating system is not recommended for The Hive as it is poor.
+A good and free client is PuTTY which is available from:
+http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html
+\n
+The recommended terminals for Unix users are as follows:
+  HP-UX: dtterm              GNU: xterm, Eterm, rxvt
+Solaris: dtterm           Tru-64: dxterm
+              
+%1 addbyte
+addByte  :: Byte -> Byte -> (Bit,Byte)                         
+addByte xs ys                                                  
+  | not (isByte xs) || not (isByte ys) =
+    error "One or both of the input value's is not a byte!"
+  | otherwise = addBits xs ys                                 
+     where                                                   
+      addBits [x] [y]       = (carryout, [sum]) 
+        where
+          (sum, carryout )  = halfAdd x y                    
+      addBits (x:xs) (y:ys) = (carryout, sum)            
+        where                                               
+          sum               = sum' : sum''                   
+          (carryin, sum'')  = addBits xs ys                  
+          (sum', carryout)  = fullAdd x y carryin            
+%5 take drop lexLitChar
+
+%1 take
+%3 take c xs
+take                :: Int -> [a] -> [a]
+take 0 _             = []
+take _ []            = []
+take n (x:xs) | n>0  = x : take (n-1) xs
+take _ _             = error "Prelude.take: negative argument"
+%5 drop id addbyte lexLitChar
+
+%1 drop
+%3 drop d ys
+drop                :: Int -> [a] -> [a]
+drop 0 xs            = xs
+drop _ []            = []
+drop n (_:xs) | n>0  = drop (n-1) xs
+drop _ _             = error "Prelude.drop: negative argument"
+%5 take id addbyte lexLitChar
+
+%1 lexLitChar
+lexLitChar              :: ReadS String
+lexLitChar ('\\':s)     =  [('\\':esc, t) | (esc,t) <- lexEsc s] 
+  where
+    lexEsc (c:s)     | c `elem` "abfnrtv\\\"'" = [([c],s)]
+    lexEsc ('^':c:s) | c >= '@' && c <= '_'    = [(['^',c],s)]
+    lexEsc s@(d:_)   | isDigit d               = lexDigits s
+    lexEsc s@(c:_)   | isUpper c
+      = let table = ('\DEL',"DEL") : asciiTab
+        in case [(mne,s') | (c, mne) <- table,
+          ([],s') <- [lexmatch mne s]]
+        of (pr:_) -> [pr]
+           []     -> []
+    lexEsc _                                   = []
+lexLitChar (c:s)        =  [([c],s)]
+lexLitChar ""           =  []
+%5 take drop id addbyte
+
+%1 id
+%3 flip . id
+id             :: a -> a
+id    x         = x
+%5 take drop addbyte lexLitChar
+
+%1 takecxsdropdys
+A popular talker character
+%5 take drop id addbyte lexLitChar
+
+%1 command
+Type 'commands' for a list of available commands
+
+%1 brummy
+Grrr is an example of a brummy
+
+%1 yuss
+nuss
+
+%1 test
+What are you testing?
+
+%1 naws
+NAWS is the terminal size negotiation option. If your terminal 
+supports it, then it will be automatically turned on
+
+%1 hello
+Why are you saying hello to the help system?
+
+%1 lol
+Laughs out loud
+
+%1 noop
+No operation                   
+                             
+%1 wankstain
+Scrape away as much as possible. Sponge with lukewarm water. 
+Never use hot water, as heat hardens the stain. If this does not
+succeed, spread the stain with a paste of cream of tartar and 
+water, adding a crushed aspirin to the paste. Leave for 20 - 30
+minutes. Rinse well in warm water. OR use a diaper wash/sanitiser 
+container sodium percarbonate 
+
+%1 small_monkeys smallmonkeys monkeys
+Deep in the Amazon jungle live creatures, small enough to fit in 
+the palm of your hand, that spend their days in the vertical 
+world of the rainforest and their nights in hollow tree trunks. 
+Beloved by the local Satare Maue Indians, who live alongside 
+them, marmosets and tamarins are the world's smallest monkeys
+
+%1 drunk ale piss pissed
+Say Goodbye to Hangovers Forever
+\n
+This all-natural patented product eliminates hangovers safely 
+and effectively, allowing you to enjoy any and all alcoholic 
+beverages without the after-effects of a hangover. Sob'r-K[tm] 
+is the only product guaranteed to combat the adverse effects 
+of alcohol. Doctors and users world wide have praised 
+Sob'r-K[tm] for its fast and effective relief of the common 
+hangover
+
+%1 heraldry
+Sorry I don't know anything about heraldry 
+
+%1 haggis
+Haggis "is typically served on Burns Night, January 25, when 
+Scotland celebrates the birth of its greatest poet, Robert Burns, 
+who was born in Ayrshire on that date in 1759. During the 
+celebration, Burns poems are read, and the haggis is addressed by 
+a member of the party, ceremonially, in the form of verses from 
+Burns' poem, 'Address to a Haggis.' A typical meal for Burns Night 
+would include Cock-a-Leekie, Haggis with Tatties-an'-Neeps, Roastit 
+Beef, Tipsy Laird, and Dunlop Cheese." 
+
+%1 tittensor titensor tittensoar titensoar tit tittensaurus titensaurus
+Tittensor village is three miles NNW of Stone in Staffordshire. 
+Historically Tittensor forms part of Stone parish. The de Tittensor 
+family occupied a manor house which passed to the Gerrard family 
+sometime before 1405. The house was destroyed and rebuilt several 
+times over the centuries, and was finally demolished in 1834. 
+Some of the materials were used to build St Luke's church in 
+Tittensor was constructed in 1880-81. The ruins of the manor 
+house remained until they were finally demolished in the 
+early 1960s
+

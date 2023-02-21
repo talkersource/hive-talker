@@ -1,0 +1,185 @@
+v0.32
+                                           
+ * set command added                
+ * Page 2 of profiles added (personal info)
+ * Special login screen shown for users connecting from DMU
+
+v0.31
+
+ * title command added
+ * who command updated to show title
+
+v0.30
+
+ * help files updated
+ * lsi improved
+ * stats_info added to login for http://talkers.ws
+
+v0.29
+
+ * group reconnect/logout handled
+ * group_create improved
+ * group tells bug fixed
+ * dsay and demote commands added
+ * udata removed when a plugin is unloaded
+
+v0.28
+
+ * Major bug fixed
+ * group_create improved
+ * 'look' for groups
+
+v0.27
+
+ * 'commands' command updated to show sub-commands
+
+v0.26
+
+ * group tells layer 1 implemented
+ * page 1 of profile fully working
+
+v0.25
+
+ * plugin udata load/save added
+ * elite plugin added
+
+v0.24
+
+ * groups system layer 1 implemented 
+ * dynamic commands within plugins are now supported
+
+v0.23
+
+ * tell_user and tell_all replaced ready for ignore
+
+v0.22
+
+ * many small bugs fixed
+ * default plugins now loaded from a file at startup
+ * user lists (ulist_t) added
+
+v0.21
+
+ * generic history buffer
+ * history buffer added to private communication
+
+v0.20
+
+ * inactivity timeout and reactivate are now informed
+
+v0.19
+
+ * inactive time changed to 45 minutes
+ * battleships completed
+
+v0.18
+
+ * 'who' at login prompt
+ * tells you who else is connected when you first log in
+ * battleships first beta
+
+v0.17
+
+ * motd renamed to changes
+ * rules for quiz and bsh added
+ * prompt command added
+ * more user parameters saved
+ * first page of profile
+
+v0.16
+
+ * ip addresses added to 'connected' command
+ * backspace handled correctly for bad clients (eg ms telnet)
+ * textfiles moved to a plugin
+ * helpfiles now correctly unloaded
+
+v0.15
+ 
+ * sub commands added
+ * activity bars added
+
+v0.14
+
+ * commands: idlemsg, look, ls, connected, motd
+ * user listing commands such as who, idle etc only list users less than
+   1 hour idle, the only command which list all connections is 'connected'
+ * most commands moved from core into new plugins
+
+v0.13
+
+ * plugin hooks for login, logout, save and reconnect added
+ * udata support added for plugin user data
+
+v0.12
+
+ * timer changed from SIGALARM to socket timeout
+ * method of storing user login time changed
+
+v0.11
+
+ * plugins system improved
+ * crash recovery system improved
+ * debug added
+ * commands: ep, debug
+
+v0.1
+
+ * user save feature
+ * commands: save, password
+
+v0.09
+
+ * commands: idle, recap
+
+v0.08
+
+ * commands: userids, colour
+ * binary file routines added
+ * userids loaded and stored in memory
+ * communications commands moved to comms.so
+
+v0.07
+
+ * command tokenizer and changed format of command functions
+ * commands: who, rules, dice (essential ;-)
+
+v0.06
+
+ * logging
+ * commands: bug idea
+
+v0.05
+
+ * online help plugin
+ * commands: help
+
+v0.04
+
+ * overhall of user storage
+ * find_user_on
+ * commands: tell, remote
+ * max newuser connections
+
+v0.03
+
+ * commands: whot
+ * textfile loading
+ * plugin crash recovery
+
+v0.02
+
+ * admin mode
+ * plugins
+ * commands: lp, up, rp, shutdown, abort
+
+v0.01
+
+ * socket handling
+ * parser
+ * command storage  
+ * user storage
+ * low level communications
+ * string library
+ * login sequence
+ * commands: say emote quit commands
+ * colour wands
